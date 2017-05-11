@@ -21,6 +21,8 @@ class Group extends BaseCollection
      */
     public $map = [];
 
+    public $groupMap = [];
+
     /**
      * create a single instance.
      *
@@ -339,5 +341,33 @@ class Group extends BaseCollection
     public function get($key, $default = null)
     {
         return parent::get($key, $this->update($key));
+    }
+
+    /**
+     * 设置群名称和群ID的关联
+     * @param $key
+     * @param $value
+     */
+    public function setGmap($key, $value)
+    {
+        $this->groupMap[$key] = $value;
+    }
+
+    /**
+     * 根据群NickName获取 UserName
+     * @param $key
+     * @return mixed
+     */
+    public function getGmap($key)
+    {
+        if(array_key_exists($key,$this->groupMap))
+        {
+            return $this->groupMap[$key];
+
+        }else{
+
+            return '';
+        }
+
     }
 }

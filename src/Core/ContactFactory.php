@@ -11,6 +11,7 @@ namespace Hanson\Vbot\Core;
 use Hanson\Vbot\Collections\Official;
 use Hanson\Vbot\Collections\Special;
 use Hanson\Vbot\Support\FileManager;
+use Hanson\Vbot\Support\Console;
 
 class ContactFactory
 {
@@ -79,7 +80,9 @@ class ContactFactory
             } elseif (official()->isOfficial($contact['VerifyFlag'])) { // 公众号
                 Official::getInstance()->put($contact['UserName'], $contact);
             } elseif (strstr($contact['UserName'], '@@') !== false) { // 群聊
+                Console::log('UserName:'.$contact['UserName'] .'  NickName:'.$contact['NickName']);
                 group()->put($contact['UserName'], $contact);
+                group()->setGmap($contact['NickName'],$contact['UserName']);
             } else {
                 contact()->put($contact['UserName'], $contact);
             }

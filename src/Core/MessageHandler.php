@@ -148,16 +148,23 @@ class MessageHandler
             call_user_func_array($this->onceHandler, []);
         }
 
-        $time = 0;
+        $date = date('i');
 
         while (true) {
             if ($this->customHandler instanceof Closure) {
                 call_user_func_array($this->customHandler, []);
             }
 
-            if (time() - $time > 1800) {
-                Text::send('filehelper', '心跳 '.Carbon::now()->toDateTimeString());
-                $time = time();
+            $tmpdate = date('i');
+
+            if ($tmpdate != $date) {  //每分种一次心跳
+
+                //Text::send('filehelper', '心跳 ' . Carbon::now()->toDateTimeString());
+                $message  = (object)array('fromType'=>'Heartbeats','content'=>'心跳');
+
+                call_user_func_array($this->handler, [$message]);
+
+                $date = $tmpdate;
             }
 
             $checkSync = (new Sync())->checkSync();
