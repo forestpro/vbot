@@ -43,7 +43,15 @@ class ShareFactory
             $xml = preg_replace('/(@\S+:\\n)/', '', $xml);
         }
 
-        $array = (array) simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA);
+        try{
+            $array = (array)simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA);
+
+        } catch ( ErrorException $e )
+        {
+            print("Caught the error: ".$e->getMessage."<br />\r\n" );
+        }
+
+       // $array = (array) simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA);
 
         $this->xml = $info = (array) $array['appmsg'];
 
